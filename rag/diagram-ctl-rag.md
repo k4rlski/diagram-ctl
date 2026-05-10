@@ -72,3 +72,19 @@ site-ctl (v2.2.0, prod), swa-ctl (v0.1.0, dev), pwdx-daemon (prod), job-board-ct
 
 ### DevOps
 repo-ctl (v0.1.0, dev), diagram-ctl (v0.1.0, dev), banner-ctl (installed/prod), parity-ctl (planned), fang-ctl (planned)
+
+## MARS Integration (2026-05-10)
+
+The static/server-rendered diagram approach in diagram-ctl (PNG via GraphViz) is complemented by interactive browser-based diagrams in mars-status:
+
+- **`/ops/infra-dev`** — Infrastructure overview (Kanban lanes + SVG connectors)
+- **`/diagrams/plan-ctl-workflow`** — Plan-CTL/Cursor-Export-CTL interop (lanes + PERT tabs)
+- **`/diagrams/job-board-ctl-workflow`** — Job posting pipeline (lanes + PERT)
+- **`/diagrams/migration-spear`** — Server migration diagram
+
+These use HTML/CSS/SVG rendered client-side from JSON data files, without GraphViz. diagram-ctl remains the preferred approach for automated static exports.
+
+### TOOL_META (ui-ctl.js)
+- Path: `/tools/diagram-ctl`
+- Repo: `k4rlski/diagram-ctl`
+- RAG: `rag/diagram-ctl-rag.md`
