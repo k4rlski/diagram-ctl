@@ -84,6 +84,13 @@ The static/server-rendered diagram approach in diagram-ctl (PNG via GraphViz) is
 
 These use HTML/CSS/SVG rendered client-side from JSON data files, without GraphViz. diagram-ctl remains the preferred approach for automated static exports.
 
+### Deep Card Popups (2026-05-10)
+Browser-based diagram popups support rich technical content:
+- **Popup sections**: description, cron (actual crontab), queries[] (SQL), cli[] (commands), code[] (snippets), tech[], commands (chips), issues[], links[]
+- **Detail pages**: `/diagrams/*/detail?card=<id>` — full-page render from same JSON data
+- **Template**: `workflow-detail.html` (shared, parameterized)
+- **Architecture**: One JSON file → modal popup + detail page (no per-card files)
+
 ### TOOL_META (ui-ctl.js)
 - Path: `/tools/diagram-ctl`
 - Repo: `k4rlski/diagram-ctl`
