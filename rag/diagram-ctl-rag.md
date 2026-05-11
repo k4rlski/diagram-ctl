@@ -99,6 +99,7 @@ New `logs[]` popup section type for diagram cards:
 - **GitHub links on Kanban cards**: `github` field (repo + file + optional lines) now on all top-lane cards for clickable source links
 - **Server fields**: `server` (host + path + service) added to cards with production presence
 - **Populated on**: job-board-ctl-workflow Kanban cards (daemon, logfile, check-sched) + PERT steps (pj-cron, ba-check-sched, ba-wp-cron)
+- **WordPress logs** (2026-05-11): Apache error log, PHP-FPM log, WP-cron access log added to wp-cli card and all WP-interacting PERT steps (pj-wpcli, ba-wp-future, ba-wp-cron, ba-check-sched, fe-wp-post)
 - **Issue**: mars-status#130
 
 ### TOOL_META (ui-ctl.js)
