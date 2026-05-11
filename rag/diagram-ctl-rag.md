@@ -110,6 +110,22 @@ New `logs[]` popup section type for diagram cards:
 - **PERT**: Login Flow, Admin CRUD Flow, Access Control Flow
 - **Popups**: Full enrichment (server, github, queries, cli, code, logs, links)
 
+### APX-CTL Workflow Diagram (2026-05-11)
+- **Page**: `/diagrams/apx-ctl-workflow` — Evidence capture orchestrator visualization
+- **Data**: `static/data/apx-ctl-workflow.json` — 5 lanes, 12 cards, 15 connections, 3 PERT tabs
+- **Lanes**: MARS (trigger), rodan (CLI), apx-prod (capture), Databases (CRM + logs), External Services (proxy, Dropbox, Slack)
+- **PERT**: One-Shot Capture, Batch Capture, Error/Retry Flow
+- **Popups**: Full enrichment (server, github, queries, cli, code, cron, links)
+- **Cross-ref**: APX-CTL RAG (`k4rlski/apx-ctl`), AUTO-PRINT RAG (`k4rlski/pdf-autoprint-2`)
+
+### Auto-Print Workflow Diagram (2026-05-11)
+- **Page**: `/diagrams/auto-print-workflow` — PDF capture engine internals
+- **Data**: `static/data/auto-print-workflow.json` — 6 lanes, 14 cards, 16 connections, 3 PERT tabs
+- **Lanes**: Triggers (cron/CLI), Perl Orchestrator, Node.js Engine, Proxy Layer, Storage (DB + Dropbox), Notifications
+- **PERT**: PDF Capture Flow, Folder Sync Flow, Notification/Logging Flow
+- **Popups**: Full enrichment (server, github, queries, cli, code, cron, logs, links)
+- **Cross-ref**: APX-CTL RAG, AUTO-PRINT RAG, auto-print-proxy repo, srv-apx-prod-auto-print-io repo
+
 ### TOOL_META (ui-ctl.js)
 - Path: `/tools/diagram-ctl`
 - Repo: `k4rlski/diagram-ctl`
