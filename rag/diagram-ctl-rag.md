@@ -81,6 +81,7 @@ The static/server-rendered diagram approach in diagram-ctl (PNG via GraphViz) is
 - **`/diagrams/plan-ctl-workflow`** — Plan-CTL/Cursor-Export-CTL interop (lanes + PERT tabs)
 - **`/diagrams/job-board-ctl-workflow`** — Job posting pipeline (lanes + PERT)
 - **`/diagrams/migration-spear`** — Server migration diagram
+- **`/diagrams/user-mgmt`** — User Management & Access Control (lanes + PERT, 3 tabs)
 
 These use HTML/CSS/SVG rendered client-side from JSON data files, without GraphViz. diagram-ctl remains the preferred approach for automated static exports.
 
@@ -101,6 +102,13 @@ New `logs[]` popup section type for diagram cards:
 - **Populated on**: job-board-ctl-workflow Kanban cards (daemon, logfile, check-sched) + PERT steps (pj-cron, ba-check-sched, ba-wp-cron)
 - **WordPress logs** (2026-05-11): Apache error log, PHP-FPM log, WP-cron access log added to wp-cli card and all WP-interacting PERT steps (pj-wpcli, ba-wp-future, ba-wp-cron, ba-check-sched, fe-wp-post)
 - **Issue**: mars-status#130
+
+### User Management Diagram (2026-05-11)
+- **Page**: `/diagrams/user-mgmt` — Access-CTL workflow visualization
+- **Data**: `static/data/user-mgmt.json` — 5 lanes, 12 cards, 14 connections, 3 PERT tabs
+- **Lanes**: mars-status (Flask), Frontend (HTML/JS), Database (pay_ctl), GitHub (repos), Documentation (RAGs)
+- **PERT**: Login Flow, Admin CRUD Flow, Access Control Flow
+- **Popups**: Full enrichment (server, github, queries, cli, code, logs, links)
 
 ### TOOL_META (ui-ctl.js)
 - Path: `/tools/diagram-ctl`
