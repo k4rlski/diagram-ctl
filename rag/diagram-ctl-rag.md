@@ -126,6 +126,16 @@ New `logs[]` popup section type for diagram cards:
 - **Popups**: Full enrichment (server, github, queries, cli, code, cron, logs, links)
 - **Cross-ref**: APX-CTL RAG, AUTO-PRINT RAG, auto-print-proxy repo, srv-apx-prod-auto-print-io repo
 
+### Notify-CTL / Job-Board Gmail Confirmation (2026-05-11)
+- **Card**: "Gmail Notify" added to `/diagrams/job-board-ctl-workflow` (External Services lane)
+- **Connection**: `daemon` → `gmail-notify` (type: api, label: "post confirm")
+- **PERT step**: `pj-gmail` in Post Job Pipeline (between `pj-dropbox` and `pj-done`)
+- **Tool**: `notify-ctl` (`k4rlski/notify-ctl`) — standalone Gmail notification CLI
+- **Auth**: Google Service Account + domain-wide delegation → `auto-ctl@perm-ads.com`
+- **Templates**: YAML-defined (job-posted, auto-print-complete, schedule-posted, batch-complete)
+- **Deploy**: `claw.auto-ctl.io:/opt/notify-ctl/`
+- **First use case**: Email confirmation to `admin@perm-ads.com` after job posting completes
+
 ### TOOL_META (ui-ctl.js)
 - Path: `/tools/diagram-ctl`
 - Repo: `k4rlski/diagram-ctl`
