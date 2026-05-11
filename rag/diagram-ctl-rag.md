@@ -86,10 +86,20 @@ These use HTML/CSS/SVG rendered client-side from JSON data files, without GraphV
 
 ### Deep Card Popups (2026-05-10)
 Browser-based diagram popups support rich technical content:
-- **Popup sections**: description, cron (actual crontab), queries[] (SQL), cli[] (commands), code[] (snippets), tech[], commands (chips), issues[], links[]
+- **Popup sections**: description, cron (actual crontab), queries[] (SQL), cli[] (commands), code[] (snippets), logs[] (commands), tech[], commands (chips), issues[], links[]
 - **Detail pages**: `/diagrams/*/detail?card=<id>` — full-page render from same JSON data
 - **Template**: `workflow-detail.html` (shared, parameterized)
 - **Architecture**: One JSON file → modal popup + detail page (no per-card files)
+
+### Logs Section + GitHub Source Links (2026-05-11)
+New `logs[]` popup section type for diagram cards:
+- **Schema**: Each entry has `label`, `path`, `host`, `view_cmd`, `grep_cmd`, `follow_cmd`
+- **Rendering**: After code[], before issues[] — styled log entries with copyable commands
+- **CSS**: `.dm-log-entry`, `.dm-log-badge`, `.dm-log-path`, `.dm-log-host`, `.dm-log-cmd` (and `.wd-` prefix in workflow-detail.html)
+- **GitHub links on Kanban cards**: `github` field (repo + file + optional lines) now on all top-lane cards for clickable source links
+- **Server fields**: `server` (host + path + service) added to cards with production presence
+- **Populated on**: job-board-ctl-workflow Kanban cards (daemon, logfile, check-sched) + PERT steps (pj-cron, ba-check-sched, ba-wp-cron)
+- **Issue**: mars-status#130
 
 ### TOOL_META (ui-ctl.js)
 - Path: `/tools/diagram-ctl`
