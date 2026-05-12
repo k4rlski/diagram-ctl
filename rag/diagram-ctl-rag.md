@@ -136,14 +136,19 @@ New `logs[]` popup section type for diagram cards:
 - **Deploy**: `rodan.auto-cmd.io:/opt/notify-ctl/`
 - **First use case**: Email confirmation to `admin@perm-ads.com` after job posting completes
 
-### Notify-CTL Workflow Diagram (2026-05-12)
+### Notify-CTL Workflow Diagram (2026-05-12, enriched)
 - **Page**: `/diagrams/notify-ctl-workflow` — Gmail notification system visualization
-- **Data**: `static/data/notify-ctl-workflow.json` — 5 lanes, 7 cards, 7 connections, 3 PERT tabs
-- **Lanes**: sitectl.auto-lamp.io (trigger), rodan.auto-cmd.io (engine), permtrak.com (CRM), dbx.auto-ops.net (dedup), Gmail API (delivery)
-- **PERT**: Cron-Check Flow (7 steps), Ad-Hoc Send Flow (5 steps), Status/Inspect Flow (4 steps)
-- **Popups**: Full enrichment (server, github, queries, cli, code, cron, logs, links)
-- **Architecture**: Kanban lanes mirror the system mermaid diagram — daemon sets Active → cron polls → dedup via dbx → Gmail send → record result
-- **Cross-ref**: NOTIFY-CTL RAG (`k4rlski/notify-ctl`), JOB-BOARD-CTL RAG
+- **Data**: `static/data/notify-ctl-workflow.json` — 6 lanes, 11 cards, 11 connections, 3 PERT tabs
+- **Lanes**: sitectl (trigger), rodan (engine), permtrak (CRM), dbx (dedup DB), Gmail API (delivery), MARS (dashboard UI)
+- **Lane metadata**: All lanes have host, ip, role, badge (APX-parity)
+- **Cards**: daemon, cron, cron-check, config-yml, SA JSON, log-file, t_e_s_t_p_e_r_m, notifications, inbox, Slack (planned), /tools/notify-ctl
+- **PERT**: Cron-Check Flow (7 steps), Ad-Hoc Send Flow (6 steps), Status/Inspect Flow (5 steps)
+- **Connection types**: db, cron, file, api (standardized with job-board/APX vocabulary)
+- **Popups**: Full enrichment — server, github (repo+file+lines), queries, cli (command key), code (file key), logs (view+grep+follow), issues[], links[], tool_page
+- **GitHub links**: Repo, Issues, Commits, RAG on all relevant cards
+- **Color scheme**: databases=#da70d6, servers=#f0883e/#58a6ff, API=#f85149, UI=#39d2c0
+- **Future**: Slack webhook card (planned), references slack-ctl placeholder
+- **Cross-ref**: NOTIFY-CTL RAG (`k4rlski/notify-ctl`), JOB-BOARD-CTL RAG, MARS-CTL RAG
 
 ### TOOL_META (ui-ctl.js)
 - Path: `/tools/diagram-ctl`
