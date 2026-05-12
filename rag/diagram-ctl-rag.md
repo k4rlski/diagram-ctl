@@ -133,8 +133,17 @@ New `logs[]` popup section type for diagram cards:
 - **Tool**: `notify-ctl` (`k4rlski/notify-ctl`) — standalone Gmail notification CLI
 - **Auth**: Google Service Account + domain-wide delegation → `auto-ctl@perm-ads.com`
 - **Templates**: YAML-defined (job-posted, auto-print-complete, schedule-posted, batch-complete)
-- **Deploy**: `claw.auto-ctl.io:/opt/notify-ctl/`
+- **Deploy**: `rodan.auto-cmd.io:/opt/notify-ctl/`
 - **First use case**: Email confirmation to `admin@perm-ads.com` after job posting completes
+
+### Notify-CTL Workflow Diagram (2026-05-12)
+- **Page**: `/diagrams/notify-ctl-workflow` — Gmail notification system visualization
+- **Data**: `static/data/notify-ctl-workflow.json` — 5 lanes, 7 cards, 7 connections, 3 PERT tabs
+- **Lanes**: sitectl.auto-lamp.io (trigger), rodan.auto-cmd.io (engine), permtrak.com (CRM), dbx.auto-ops.net (dedup), Gmail API (delivery)
+- **PERT**: Cron-Check Flow (7 steps), Ad-Hoc Send Flow (5 steps), Status/Inspect Flow (4 steps)
+- **Popups**: Full enrichment (server, github, queries, cli, code, cron, logs, links)
+- **Architecture**: Kanban lanes mirror the system mermaid diagram — daemon sets Active → cron polls → dedup via dbx → Gmail send → record result
+- **Cross-ref**: NOTIFY-CTL RAG (`k4rlski/notify-ctl`), JOB-BOARD-CTL RAG
 
 ### TOOL_META (ui-ctl.js)
 - Path: `/tools/diagram-ctl`
