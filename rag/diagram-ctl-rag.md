@@ -154,3 +154,63 @@ New `logs[]` popup section type for diagram cards:
 - Path: `/tools/diagram-ctl`
 - Repo: `k4rlski/diagram-ctl`
 - RAG: `rag/diagram-ctl-rag.md`
+
+---
+
+## Site-CTL Workflow Diagram (Created 2026-05-19)
+
+**Page**: `/diagrams/site-ctl-workflow`  
+**Template**: `static/site-ctl-workflow.html`  
+**Data file**: `static/data/site-ctl-workflow.json`
+
+### Overview
+Interactive workflow visualization for the `site-ctl` CLI tool (site provisioning, deployment, job posting, SSL management). Built to the same standard as the `job-board-ctl-workflow` diagram with enriched cards, PERT tabs, and consolidated documentation.
+
+### Kanban Lanes (5)
+
+| Lane | Cards | Purpose |
+|------|-------|---------|
+| CLI Commands | provision, deploy, post-job, ssl-watchdog, refresh-job, update, list, remove-site | All site-ctl subcommands |
+| Infrastructure | dns-register, ansible-playbook, certbot-ssl, bind-dns | Backend automation targets |
+| CRM & Data | crm-lookup, crm-update, fetch-job-data | Database interactions |
+| External Services | dnsimple-api, auto-print-ewp (removed), notify-ctl | Third-party integrations |
+| Resources | Documentation (14 files), Logs + Databases | Reference materials |
+
+### PERT Workflow Tabs (4)
+
+1. **Full Deploy Pipeline** (12 nodes): Trigger → Config → CRM Lookup → Domain Check → DNS Register → DNS Propagation → Ansible WordPress → SSL Verify → Post Job → CRM Update → Notify → Done
+2. **Provision Only** (8 nodes): Trigger → Config → CRM → Domain → DNS → Ansible → SSL → Done (no posting)
+3. **Daemon-Triggered Deploy** (6 nodes): Cron → Scan CRM → Match statewp → Execute site-ctl → Write CRM → Log
+4. **Scheduled Post Lifecycle** (8 nodes): Schedule Requested → Parse DateTime → WP Future Post → CRM Update → WP Cron Publishes → Post Live → auto-print-ewp → Notify-CTL
+
+### Card Popup Structure
+
+Each card popup includes (where applicable):
+- `description`: Main explanation of the component
+- `tech[]`: Technologies used (Python, WP-CLI, etc.)
+- `cli[]`: Example command-line invocations
+- `queries[]`: SQL queries used by the component
+- `code[]`: Key code snippets from main.py
+- `logs[]`: Log file paths and sample output
+- `issues[]`: Related GitHub issues
+- `links[]`: GitHub file links, documentation links
+- `server{}`: host, path, service name
+- `github{}`: repo, file, line ranges
+
+### Special Features
+
+- **Consolidated Documentation Card**: Single "Documentation (14 files)" card with popup listing all 14 documents with clickable GitHub links (deep-dive, RAGs, incidents, planning docs, etc.)
+- **Removed-Card CSS**: Red border + X icon + strikethrough for deprecated screenshot card
+- **dm-log-entry styling**: Log entries rendered with monospace font and timestamp highlighting
+- **PERT arrows**: SVG arrows between nodes with dependency visualization
+
+### Relationship to Other Diagrams
+- Modeled after `job-board-ctl-workflow` for consistency
+- Uses same shared JS libraries (`diagram-shared.js`, `html2canvas`, `dom-to-image`)
+- Data format compatible with `render-diagram.js` patterns
+- No modifications to other existing diagrams (isolated data file)
+
+### Cross-References
+- MARS-CTL-RAG.md (diagram hosting, nginx config)
+- site-ctl-deep-dive-extra.md (detailed workflow explanation)
+- UI-CTL-RAG.md (navigation menu registration)
