@@ -1,216 +1,194 @@
 # diagram-ctl RAG
-_Last updated: 2026-03-04 | Status: v0.1.0 dev_
+_Last updated: 2026-06-06 | Status: v1.0.0 production_
 
 ## Purpose
-Programmatic diagram generation for the auto-ctl tool ecosystem.
-Reads structured JSON/YAML data files → renders PNG diagrams via GraphViz.
-Built on `diagrammer-x` (k4rlski/diagrammer-x) — same NetworkX + PyGraphviz stack.
+Programmatic and browser-based diagram generation for the auto-ctl tool ecosystem.
+Two rendering modes:
+1. **CLI/GraphViz** — Python script reads JSON → renders PNG via NetworkX + PyGraphviz (rodan)
+2. **Browser/MARS** — Interactive HTML diagrams with Kanban lanes + PERT tabs, powered by JSON data files
 
-## Origin
-- Base engine: `k4rlski/diagrammer-x` — Python + GraphViz, JSON input, renders PNG
-- Karl built diagrammer-x for network/family tree diagrams; same rendering pipeline
-- diagram-ctl adapts it for the tool ecosystem: categories, servers, pipelines
+## Repos & Local Paths
+| Item | Location |
+|------|----------|
+| GitHub | `k4rlski/diagram-ctl` |
+| Local Clone | `/home/pyramider/DEVOPS Dropbox/DEVOPS-KARL/diagram-ctl/` |
+| Engine Reference | `k4rlski/diagrammer-x` |
+| MARS Diagrams (static) | `/home/pyramider/DEVOPS Dropbox/DEVOPS-KARL/MARS-STATUS/static/` |
+| MARS JSON Data | `/home/pyramider/DEVOPS Dropbox/DEVOPS-KARL/MARS-STATUS/static/data/` |
+| MARS Tool Page | `https://mars.auto-ctl.io/tools/diagram-ctl` |
 
-## Repos
-- **diagram-ctl**: `k4rlski/diagram-ctl` (new)
-- **diagrammer-x**: `k4rlski/diagrammer-x` (engine reference)
+## Architecture
 
-## Deploy Target
-- **rodan.auto-cmd.io** → `/opt/auto-cmd/diagram-ctl/`
-- Graphviz must be installed: `sudo apt install graphviz`
-- Python: `pip install networkx pygraphviz`
+### CLI Mode (GraphViz)
+- Deploy: `rodan.auto-cmd.io` → `/opt/auto-cmd/diagram-ctl/`
+- Dependencies: `graphviz`, `networkx`, `pygraphviz`
+- Commands:
+  ```bash
+  diagram-ctl category   # Tools grouped by category
+  diagram-ctl server     # Tools grouped by server
+  diagram-ctl pipeline   # Financial pipeline flow
+  diagram-ctl all        # Generate all → output/
+  ```
+- Data source: `data/auto-ctl-ecosystem.json`
 
-## Commands
-```bash
-diagram-ctl category   # Tools grouped by category (Infrastructure/Financial/etc.)
-diagram-ctl server     # Tools grouped by deployment server
-diagram-ctl pipeline   # Financial automation pipeline diagram
-diagram-ctl all        # All three diagrams at once → output/
+### Browser Mode (MARS Interactive Diagrams)
+- Served by MARS Flask app (`routes/pages.py`)
+- Each diagram is a standalone HTML file in `static/`
+- Data-driven: fetches JSON from `/static/data/<name>.json`
+- Features: Server swimlanes (Kanban), PERT dependency charts, clickable nodes
+- Routes registered in `routes/pages.py` lines 576–625
+
+## Complete Diagram Inventory (10 diagrams)
+
+### 1. Migration: Spear → CPX
+| Field | Value |
+|-------|-------|
+| Route | `/diagrams/migration-spear` |
+| File | `static/migration-spear.html` (245 lines) |
+| Type | Static quad-panel migration diagram |
+| Description | Shows the server migration path from Spear (legacy) to CPX (Akamai/Linode), with phases, services, and DNS cutover steps |
+
+### 2. Plan-CTL Workflow
+| Field | Value |
+|-------|-------|
+| Route | `/diagrams/plan-ctl-workflow` |
+| File | `static/plan-ctl-workflow.html` (837 lines) |
+| Data | `static/data/plan-ctl-workflow.json` |
+| Type | Kanban lanes + PERT |
+| Description | Visualizes plan-ctl lifecycle: plan creation → task breakdown → execution → completion. Server lanes show where each phase runs. PERT shows dependencies between plan stages. |
+
+### 3. Job-Board-CTL Workflow
+| Field | Value |
+|-------|-------|
+| Route | `/diagrams/job-board-ctl-workflow` |
+| File | `static/job-board-ctl-workflow.html` (834 lines) |
+| Data | `static/data/job-board-ctl-workflow.json` |
+| Type | Kanban lanes + PERT |
+| Description | Job board automation: source scraping → filtering → application → tracking. Shows crawler pipeline, resume selection, and application dispatch across servers. |
+
+### 4. User Mgmt
+| Field | Value |
+|-------|-------|
+| Route | `/diagrams/user-mgmt` |
+| File | `static/user-mgmt.html` (837 lines) |
+| Data | `static/data/user-mgmt.json` |
+| Type | Kanban lanes + PERT |
+| Description | User management workflow: account provisioning, role assignment, access control, and audit trails across infrastructure servers. |
+
+### 5. APX-CTL Workflow
+| Field | Value |
+|-------|-------|
+| Route | `/diagrams/apx-ctl-workflow` |
+| File | `static/apx-ctl-workflow.html` (837 lines) |
+| Data | `static/data/apx-ctl-workflow.json` |
+| Type | Kanban lanes + PERT |
+| Description | APX (Apex Financial) automation: receipt capture → categorization → QuickBooks sync → reconciliation. Financial pipeline across EspoCRM and processing servers. |
+
+### 6. Auto-Print Workflow
+| Field | Value |
+|-------|-------|
+| Route | `/diagrams/auto-print-workflow` |
+| File | `static/auto-print-workflow.html` (837 lines) |
+| Data | `static/data/auto-print-workflow.json` |
+| Type | Kanban lanes + PERT |
+| Description | Automated print pipeline: document generation → queue management → printer dispatch → confirmation. Covers label printing, envelope addressing, and bulk mailings. |
+
+### 7. Notify-CTL Workflow
+| Field | Value |
+|-------|-------|
+| Route | `/diagrams/notify-ctl-workflow` |
+| File | `static/notify-ctl-workflow.html` (837 lines) |
+| Data | `static/data/notify-ctl-workflow.json` |
+| Type | Kanban lanes + PERT |
+| Description | Notification orchestration: event triggers → routing logic → multi-channel dispatch (Slack, email, SMS, Telegram). Shows alert escalation and delivery confirmation. |
+
+### 8. Site-CTL Workflow
+| Field | Value |
+|-------|-------|
+| Route | `/diagrams/site-ctl-workflow` |
+| File | `static/site-ctl-workflow.html` (880 lines) |
+| Data | `static/data/site-ctl-workflow.json` |
+| Type | Kanban lanes + PERT |
+| Description | Site management: domain provisioning → SSL/DNS → deployment → monitoring. Covers WordPress, static sites, and reverse proxy configuration across all servers. |
+
+### 9. Service-CTL Workflow
+| Field | Value |
+|-------|-------|
+| Route | `/diagrams/service-ctl-workflow` |
+| File | `static/service-ctl-workflow.html` (588 lines) |
+| Data | `static/data/service-ctl-workflow.json` |
+| Type | Kanban lanes + PERT |
+| Description | Service lifecycle management: systemd unit control, health checks, restart policies, and cross-server orchestration. Shows service dependencies and startup ordering. |
+
+### 10. Mail-CTL Workflow
+| Field | Value |
+|-------|-------|
+| Route | `/diagrams/mail-ctl-workflow` |
+| File | `static/mail-ctl-workflow.html` (587 lines) |
+| Data | `static/data/mail-ctl-workflow.json` |
+| Type | Kanban lanes + PERT |
+| Description | Email infrastructure workflow: account management → forwarding rules → inbox operations → monitoring. Shows Dovecot/Postfix interactions and spam filtering pipeline. |
+
+## Diagram HTML Template Pattern
+All workflow diagrams (items 2–10) share a common structure:
+1. CSS variables + dark/light theme support
+2. Server swimlanes section (`.server-lanes`) — horizontal Kanban columns per server
+3. PERT section (`.pert-section`) — dependency graph with nodes and arrows
+4. JSON fetch on load → renders cards into lanes, builds PERT connections
+5. Detail sub-route (`/detail`) for expanded view (uses `workflow-detail.html`)
+
+## JSON Data Schema
+Each `static/data/<name>.json` follows:
+```json
+{
+  "title": "Workflow Name",
+  "servers": [
+    {"id": "server-id", "name": "Display Name", "color": "#hex"}
+  ],
+  "lanes": [
+    {
+      "server": "server-id",
+      "cards": [
+        {"id": "card-id", "title": "...", "status": "active|pending|done", "desc": "..."}
+      ]
+    }
+  ],
+  "pert": {
+    "nodes": [{"id": "...", "label": "...", "x": 0, "y": 0}],
+    "edges": [{"from": "...", "to": "...", "label": "..."}]
+  }
+}
 ```
 
-## Diagram Types
-1. **by-category**: LR layout, tools grouped under category headers, color = status
-2. **by-server**: TB layout, tools under server nodes (claw/rodan/hiro/sitectl/etc.)
-3. **pipeline**: Financial pipeline: EspoCRM → receipt-ctl/gmail-ctl → plaid-ctl → abcf-ctl → Dropbox/Slack
-
-## Status Colors
+## Status Colors (CLI mode)
 | Color | Meaning |
 |-------|---------|
-| 🟢 Green #27AE60 | production |
-| 🟡 Orange #F39C12 | dev |
-| ⚪ Gray #95A5A6 | planned |
-| ⬜ Light gray | concept |
+| Green #27AE60 | production |
+| Orange #F39C12 | dev |
+| Gray #95A5A6 | planned |
+| Light gray | concept |
 
-## Data File
-`data/auto-ctl-ecosystem.json` — source of truth for all tool metadata:
-- 25 tools defined (as of 2026-03-04)
+## CLI Data File
+`data/auto-ctl-ecosystem.json` — 25+ tools defined with:
 - Fields: id, name, tagline, category, version, status, server, slack_channel, github, subtools
-- 7 servers defined with IPs, roles, colors
+- 7 servers: claw, rodan, hiro, sitectl, hermes, cpx42, cpx43
 - 6 categories: Infrastructure, Financial, Communication, Intelligence, PERM_Product, DevOps
 
-## Key Design Decisions
-- Data-driven: update JSON → re-run → fresh diagrams (no code changes needed)
-- Extends diagrammer-x engine exactly — same `to_agraph()` + `A.draw()` pattern
-- YAML input also supported (future: add yaml loader alongside JSON)
-- Output: PNG (default) — can extend to SVG/PDF via graphviz format param
+## MARS Integration
+- Menu location: Diagrams dropdown in top nav (`static/ui-ctl.js` lines 161–170)
+- Tool page: `/tools/diagram-ctl` → `static/diagram-ctl.html`
+- Routes: `routes/pages.py` lines 576–625
+- Master diagram: `/master-diagram` → `static/master-diagram.html` (ecosystem overview)
 
-## Tool Inventory (as of 2026-03-04)
-### Infrastructure
-bkup-ctl (v1.6, prod), dns-ctl (v1.2.0, prod), snapshot-ctl (v0.1.0, dev), log-ctl (planned)
+## Planned Additions
+- `/diagrams/hermes-ctl-workflow` — Hermes agent messaging + memory workflow
+- `/diagrams/vpn-ctl-workflow` — VPN tunnel management diagram
 
-### Financial  
-receipt-ctl (v0.1.0, dev), plaid-ctl (v0.1.0, dev), abcf-ctl (v0.1.0, dev), vendor-ctl (planned), tax-ctl (planned)
+## GitHub Issues
+Track at: https://github.com/k4rlski/diagram-ctl/issues
 
-### Communication
-gmail-ctl (v0.1.0, dev), slack-ctl (planned), send-it (planned)
-
-### Intelligence
-context-ctl (running/prod), research-ctl (running/prod)
-
-### PERM Product
-site-ctl (v2.2.0, prod), swa-ctl (v0.1.0, dev), pwdx-daemon (prod), job-board-ctl (dev), media-ctl (planned)
-
-### DevOps
-repo-ctl (v0.1.0, dev), diagram-ctl (v0.1.0, dev), banner-ctl (installed/prod), parity-ctl (planned), fang-ctl (planned)
-
-## MARS Integration (2026-05-10)
-
-The static/server-rendered diagram approach in diagram-ctl (PNG via GraphViz) is complemented by interactive browser-based diagrams in mars-status:
-
-- **`/ops/infra-dev`** — Infrastructure overview (Kanban lanes + SVG connectors)
-- **`/diagrams/plan-ctl-workflow`** — Plan-CTL/Cursor-Export-CTL interop (lanes + PERT tabs)
-- **`/diagrams/job-board-ctl-workflow`** — Job posting pipeline (lanes + PERT)
-- **`/diagrams/migration-spear`** — Server migration diagram
-- **`/diagrams/user-mgmt`** — User Management & Access Control (lanes + PERT, 3 tabs)
-
-These use HTML/CSS/SVG rendered client-side from JSON data files, without GraphViz. diagram-ctl remains the preferred approach for automated static exports.
-
-### Deep Card Popups (2026-05-10)
-Browser-based diagram popups support rich technical content:
-- **Popup sections**: description, cron (actual crontab), queries[] (SQL), cli[] (commands), code[] (snippets), logs[] (commands), tech[], commands (chips), issues[], links[]
-- **Detail pages**: `/diagrams/*/detail?card=<id>` — full-page render from same JSON data
-- **Template**: `workflow-detail.html` (shared, parameterized)
-- **Architecture**: One JSON file → modal popup + detail page (no per-card files)
-
-### Logs Section + GitHub Source Links (2026-05-11)
-New `logs[]` popup section type for diagram cards:
-- **Schema**: Each entry has `label`, `path`, `host`, `view_cmd`, `grep_cmd`, `follow_cmd`
-- **Rendering**: After code[], before issues[] — styled log entries with copyable commands
-- **CSS**: `.dm-log-entry`, `.dm-log-badge`, `.dm-log-path`, `.dm-log-host`, `.dm-log-cmd` (and `.wd-` prefix in workflow-detail.html)
-- **GitHub links on Kanban cards**: `github` field (repo + file + optional lines) now on all top-lane cards for clickable source links
-- **Server fields**: `server` (host + path + service) added to cards with production presence
-- **Populated on**: job-board-ctl-workflow Kanban cards (daemon, logfile, check-sched) + PERT steps (pj-cron, ba-check-sched, ba-wp-cron)
-- **WordPress logs** (2026-05-11): Apache error log, PHP-FPM log, WP-cron access log added to wp-cli card and all WP-interacting PERT steps (pj-wpcli, ba-wp-future, ba-wp-cron, ba-check-sched, fe-wp-post)
-- **Issue**: mars-status#130
-
-### User Management Diagram (2026-05-11)
-- **Page**: `/diagrams/user-mgmt` — Access-CTL workflow visualization
-- **Data**: `static/data/user-mgmt.json` — 5 lanes, 12 cards, 14 connections, 3 PERT tabs
-- **Lanes**: mars-status (Flask), Frontend (HTML/JS), Database (pay_ctl), GitHub (repos), Documentation (RAGs)
-- **PERT**: Login Flow, Admin CRUD Flow, Access Control Flow
-- **Popups**: Full enrichment (server, github, queries, cli, code, logs, links)
-
-### APX-CTL Workflow Diagram (2026-05-11)
-- **Page**: `/diagrams/apx-ctl-workflow` — Evidence capture orchestrator visualization
-- **Data**: `static/data/apx-ctl-workflow.json` — 5 lanes, 12 cards, 15 connections, 3 PERT tabs
-- **Lanes**: MARS (trigger), rodan (CLI), apx-prod (capture), Databases (CRM + logs), External Services (proxy, Dropbox, Slack)
-- **PERT**: One-Shot Capture, Batch Capture, Error/Retry Flow
-- **Popups**: Full enrichment (server, github, queries, cli, code, cron, links)
-- **Cross-ref**: APX-CTL RAG (`k4rlski/apx-ctl`), AUTO-PRINT RAG (`k4rlski/pdf-autoprint-2`)
-
-### Auto-Print Workflow Diagram (2026-05-11)
-- **Page**: `/diagrams/auto-print-workflow` — PDF capture engine internals
-- **Data**: `static/data/auto-print-workflow.json` — 6 lanes, 14 cards, 16 connections, 3 PERT tabs
-- **Lanes**: Triggers (cron/CLI), Perl Orchestrator, Node.js Engine, Proxy Layer, Storage (DB + Dropbox), Notifications
-- **PERT**: PDF Capture Flow, Folder Sync Flow, Notification/Logging Flow
-- **Popups**: Full enrichment (server, github, queries, cli, code, cron, logs, links)
-- **Cross-ref**: APX-CTL RAG, AUTO-PRINT RAG, auto-print-proxy repo, srv-apx-prod-auto-print-io repo
-
-### Notify-CTL / Job-Board Gmail Confirmation (2026-05-11)
-- **Card**: "Gmail Notify" added to `/diagrams/job-board-ctl-workflow` (External Services lane)
-- **Connection**: `daemon` → `gmail-notify` (type: api, label: "post confirm")
-- **PERT step**: `pj-gmail` in Post Job Pipeline (between `pj-dropbox` and `pj-done`)
-- **Tool**: `notify-ctl` (`k4rlski/notify-ctl`) — standalone Gmail notification CLI
-- **Auth**: Google Service Account + domain-wide delegation → `auto-ctl@perm-ads.com`
-- **Templates**: YAML-defined (job-posted, auto-print-complete, schedule-posted, batch-complete)
-- **Deploy**: `rodan.auto-cmd.io:/opt/notify-ctl/`
-- **First use case**: Email confirmation to `admin@perm-ads.com` after job posting completes
-
-### Notify-CTL Workflow Diagram (2026-05-12, enriched)
-- **Page**: `/diagrams/notify-ctl-workflow` — Gmail notification system visualization
-- **Data**: `static/data/notify-ctl-workflow.json` — 6 lanes, 11 cards, 11 connections, 3 PERT tabs
-- **Lanes**: sitectl (trigger), rodan (engine), permtrak (CRM), dbx (dedup DB), Gmail API (delivery), MARS (dashboard UI)
-- **Lane metadata**: All lanes have host, ip, role, badge (APX-parity)
-- **Cards**: daemon, cron, cron-check, config-yml, SA JSON, log-file, t_e_s_t_p_e_r_m, notifications, inbox, Slack (planned), /tools/notify-ctl
-- **PERT**: Cron-Check Flow (7 steps), Ad-Hoc Send Flow (6 steps), Status/Inspect Flow (5 steps)
-- **Connection types**: db, cron, file, api (standardized with job-board/APX vocabulary)
-- **Popups**: Full enrichment — server, github (repo+file+lines), queries, cli (command key), code (file key), logs (view+grep+follow), issues[], links[], tool_page
-- **GitHub links**: Repo, Issues, Commits, RAG on all relevant cards
-- **Color scheme**: databases=#da70d6, servers=#f0883e/#58a6ff, API=#f85149, UI=#39d2c0
-- **Future**: Slack webhook card (planned), references slack-ctl placeholder
-- **Cross-ref**: NOTIFY-CTL RAG (`k4rlski/notify-ctl`), JOB-BOARD-CTL RAG, MARS-CTL RAG
-
-### TOOL_META (ui-ctl.js)
-- Path: `/tools/diagram-ctl`
-- Repo: `k4rlski/diagram-ctl`
-- RAG: `rag/diagram-ctl-rag.md`
-
----
-
-## Site-CTL Workflow Diagram (Created 2026-05-19)
-
-**Page**: `/diagrams/site-ctl-workflow`  
-**Template**: `static/site-ctl-workflow.html`  
-**Data file**: `static/data/site-ctl-workflow.json`
-
-### Overview
-Interactive workflow visualization for the `site-ctl` CLI tool (site provisioning, deployment, job posting, SSL management). Built to the same standard as the `job-board-ctl-workflow` diagram with enriched cards, PERT tabs, and consolidated documentation.
-
-### Kanban Lanes (5)
-
-| Lane | Cards | Purpose |
-|------|-------|---------|
-| CLI Commands | provision, deploy, post-job, ssl-watchdog, refresh-job, update, list, remove-site | All site-ctl subcommands |
-| Infrastructure | dns-register, ansible-playbook, certbot-ssl, bind-dns | Backend automation targets |
-| CRM & Data | crm-lookup, crm-update, fetch-job-data | Database interactions |
-| External Services | dnsimple-api, auto-print-ewp (removed), notify-ctl | Third-party integrations |
-| Resources | Documentation (14 files), Logs + Databases | Reference materials |
-
-### PERT Workflow Tabs (4)
-
-1. **Full Deploy Pipeline** (12 nodes): Trigger → Config → CRM Lookup → Domain Check → DNS Register → DNS Propagation → Ansible WordPress → SSL Verify → Post Job → CRM Update → Notify → Done
-2. **Provision Only** (8 nodes): Trigger → Config → CRM → Domain → DNS → Ansible → SSL → Done (no posting)
-3. **Daemon-Triggered Deploy** (6 nodes): Cron → Scan CRM → Match statewp → Execute site-ctl → Write CRM → Log
-4. **Scheduled Post Lifecycle** (8 nodes): Schedule Requested → Parse DateTime → WP Future Post → CRM Update → WP Cron Publishes → Post Live → auto-print-ewp → Notify-CTL
-
-### Card Popup Structure
-
-Each card popup includes (where applicable):
-- `description`: Main explanation of the component
-- `tech[]`: Technologies used (Python, WP-CLI, etc.)
-- `cli[]`: Example command-line invocations
-- `queries[]`: SQL queries used by the component
-- `code[]`: Key code snippets from main.py
-- `logs[]`: Log file paths and sample output
-- `issues[]`: Related GitHub issues
-- `links[]`: GitHub file links, documentation links
-- `server{}`: host, path, service name
-- `github{}`: repo, file, line ranges
-
-### Special Features
-
-- **Consolidated Documentation Card**: Single "Documentation (14 files)" card with popup listing all 14 documents with clickable GitHub links (deep-dive, RAGs, incidents, planning docs, etc.)
-- **Removed-Card CSS**: Red border + X icon + strikethrough for deprecated screenshot card
-- **dm-log-entry styling**: Log entries rendered with monospace font and timestamp highlighting
-- **PERT arrows**: SVG arrows between nodes with dependency visualization
-
-### Relationship to Other Diagrams
-- Modeled after `job-board-ctl-workflow` for consistency
-- Uses same shared JS libraries (`diagram-shared.js`, `html2canvas`, `dom-to-image`)
-- Data format compatible with `render-diagram.js` patterns
-- No modifications to other existing diagrams (isolated data file)
-
-### Cross-References
-- MARS-CTL-RAG.md (diagram hosting, nginx config)
-- site-ctl-deep-dive-extra.md (detailed workflow explanation)
-- UI-CTL-RAG.md (navigation menu registration)
+## Related Tools
+- **plan-ctl**: Plans reference diagrams for visualization
+- **context-ctl**: ChromaDB indexes this RAG for retrieval
+- **mars-status**: Hosts all browser diagrams
+- **diagrammer-x**: Original GraphViz rendering engine
